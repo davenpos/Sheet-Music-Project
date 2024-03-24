@@ -1,0 +1,842 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: gray;
+  color: white;
+  font-family: Garamond, serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0 8px;
+}
+body h1 {
+  margin-top: 0;
+}
+body div#mainContent {
+  flex: 1;
+}
+body:has(div#scoreSetup) {
+  overflow: hidden;
+}
+body input[type=submit] {
+  font-family: Garamond, serif !important;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+p.errorMessage {
+  font-size: 2rem;
+  text-align: center;
+  margin-top: 3rem;
+}
+
+@font-face {
+  font-family: "Bravura Text";
+  src: url(BravuraText.woff);
+}
+span.notation {
+  font-family: "Bravura Text";
+  font-weight: normal;
+}
+span.notation.treble {
+  top: 6px;
+}
+span.notation.treble::before {
+  content: "\e050";
+}
+span.notation.bass {
+  top: 132px;
+}
+span.notation.bass::before {
+  content: "\e062";
+}
+span.notation.flat::before {
+  content: "\e260";
+}
+span.notation.sharp::before {
+  content: "\e262";
+}
+span.notation.natural::before {
+  content: "\e261";
+}
+span.notation.whole-rest::before {
+  content: "\e4e3";
+}
+span.notation.whole-note::before {
+  content: "\e0a2";
+}
+span.notation.half-rest::before {
+  content: "\e4e4";
+}
+span.notation.half-note-up::before {
+  content: "\e1d3";
+}
+span.notation.half-note-down::before {
+  content: "\e1d4";
+}
+span.notation.quarter-rest::before {
+  content: "\e4e5";
+}
+span.notation.quarter-note-up::before {
+  content: "\e1d5";
+}
+span.notation.quarter-note-down::before {
+  content: "\e1d6";
+}
+span.notation.eighth-rest::before {
+  content: "\e4e6";
+}
+span.notation.eighth-note-up::before {
+  content: "\e1d7";
+}
+span.notation.eighth-note-down::before {
+  content: "\e1d8";
+}
+span.notation.sixteenth-rest::before {
+  content: "\e4e7";
+}
+span.notation.sixteenth-note-up::before {
+  content: "\e1d9";
+}
+span.notation.sixteenth-note-down::before {
+  content: "\e1da";
+}
+span.notation.thirtysecond-rest::before {
+  content: "\e4e8";
+}
+span.notation.thirtysecond-note-up::before {
+  content: "\e1db";
+}
+span.notation.thirtysecond-note-down::before {
+  content: "\e1dc";
+}
+span.notation.sixtyfourth-rest::before {
+  content: "\e4e9";
+}
+span.notation.sixtyfourth-note-up::before {
+  content: "\e1dd";
+}
+span.notation.sixtyfourth-note-down::before {
+  content: "\e1de";
+}
+span.notation.onehundredtwentyeighth-rest::before {
+  content: "\e4ea";
+}
+span.notation.onehundredtwentyeighth-note-up::before {
+  content: "\e1df";
+}
+span.notation.onehundredtwentyeighth-note-down::before {
+  content: "\e1e0";
+}
+span.notation.notehead-half::before {
+  content: "\e0a3";
+}
+span.notation.notehead-black::before {
+  content: "\e0a4";
+}
+span.notation.timesignum-0 {
+  position: absolute;
+  font-size: 6rem;
+}
+span.notation.timesignum-1 {
+  position: absolute;
+  font-size: 6rem;
+}
+span.notation.timesignum-2 {
+  position: absolute;
+  font-size: 6rem;
+}
+span.notation.timesignum-3 {
+  position: absolute;
+  font-size: 6rem;
+}
+span.notation.timesignum-4 {
+  position: absolute;
+  font-size: 6rem;
+}
+span.notation.timesignum-5 {
+  position: absolute;
+  font-size: 6rem;
+}
+span.notation.timesignum-6 {
+  position: absolute;
+  font-size: 6rem;
+}
+span.notation.timesignum-7 {
+  position: absolute;
+  font-size: 6rem;
+}
+span.notation.timesignum-8 {
+  position: absolute;
+  font-size: 6rem;
+}
+span.notation.timesignum-9 {
+  position: absolute;
+  font-size: 6rem;
+}
+span.notation.timesignum-0::before {
+  content: "\e080";
+}
+span.notation.timesignum-1::before {
+  content: "\e081";
+}
+span.notation.timesignum-2::before {
+  content: "\e082";
+}
+span.notation.timesignum-3::before {
+  content: "\e083";
+}
+span.notation.timesignum-4::before {
+  content: "\e084";
+}
+span.notation.timesignum-5::before {
+  content: "\e085";
+}
+span.notation.timesignum-6::before {
+  content: "\e086";
+}
+span.notation.timesignum-7::before {
+  content: "\e087";
+}
+span.notation.timesignum-8::before {
+  content: "\e088";
+}
+span.notation.timesignum-9::before {
+  content: "\e089";
+}
+span.notation.barline {
+  position: relative;
+  font-size: 16rem;
+  display: inline-block;
+  height: 1.15em;
+  transform: scaleX(0.2);
+  transform-origin: left center;
+  bottom: 55px;
+}
+span.notation.barline::before {
+  content: "\e030";
+}
+span.notation.barline.lastOfLine, span.notation.barline-final {
+  position: absolute;
+  font-size: 16rem;
+  display: inline-block;
+  height: 1.15em;
+  transform: scaleX(0.2);
+  transform-origin: right center;
+  right: 0;
+  top: -55px;
+}
+span.notation.barline-final::before {
+  content: "\e032";
+}
+span.notation.brace {
+  position: relative;
+  font-size: 16rem;
+  display: inline-block;
+  height: 1.15em;
+  transform: scaleX(1);
+  transform-origin: left center;
+  bottom: 55px;
+}
+span.notation.brace::before {
+  content: "\e000";
+}
+span.notation#instrument {
+  vertical-align: middle;
+}
+span.notation.staff {
+  position: relative;
+  font-size: 6rem;
+  display: inline-block;
+  height: auto;
+  transform: scaleX(40);
+  transform-origin: 0% 0%;
+  bottom: 56px;
+  right: 11px;
+}
+span.notation.staff ~ span.notation.staff {
+  bottom: 182px;
+  right: 15px;
+}
+span.notation.staff::before {
+  content: "\e014";
+}
+
+h1 {
+  text-align: center;
+  font-size: 5rem;
+  margin: 20px 0;
+}
+
+div.twoColumns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+div.twoColumns div {
+  padding: 5px;
+  border: 1px solid black;
+  background-color: silver;
+}
+div.twoColumns div h3 {
+  margin: 10px 0;
+  text-align: center;
+}
+div.twoColumns div:first-of-type {
+  margin-right: 5px;
+}
+div.twoColumns div:last-of-type {
+  margin-left: 5px;
+}
+div.twoColumns form div {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  border: none;
+}
+div.twoColumns form button {
+  display: block;
+  margin: auto;
+  width: 30%;
+}
+
+form input {
+  border-width: 1px;
+}
+form input.error {
+  border-color: red;
+}
+form input.error::placeholder {
+  color: #f99;
+}
+
+div#profileDropdown {
+  float: right;
+  width: fit-content;
+}
+div#profileDropdown:hover div.profileLinks {
+  display: block;
+}
+div#profileDropdown button {
+  cursor: pointer;
+  border: none;
+}
+div#profileDropdown button#usernameBtn {
+  background-color: white;
+  transition: 0.3s;
+  color: gray;
+  text-transform: uppercase;
+  padding: 10px;
+}
+div#profileDropdown button#usernameBtn:hover {
+  background-color: #e2e2e2;
+}
+div#profileDropdown button#usernameBtn, div#profileDropdown div.profileLinks {
+  min-width: 175px;
+}
+div#profileDropdown div.profileLinks {
+  background-color: silver;
+  position: absolute;
+  padding: 5px 10px;
+  display: none;
+  z-index: 2;
+  border: 1px solid black;
+}
+div#profileDropdown div.profileLinks a, div#profileDropdown div.profileLinks form button {
+  text-decoration: none;
+  font-weight: bold;
+  color: black;
+  display: block;
+  width: fit-content;
+  width: -moz-fit-content;
+}
+div#profileDropdown div.profileLinks a:hover, div#profileDropdown div.profileLinks form button:hover {
+  text-decoration: underline;
+}
+div#profileDropdown div.profileLinks form button {
+  background-color: inherit;
+  padding: 0;
+  font-family: Garamond, serif;
+  font-size: initial;
+  font-weight: bold !important;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+h3#dashboardGreeting {
+  margin: 0 0 10px;
+  text-align: center;
+}
+
+div#userScores {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+}
+div#userScores a {
+  margin-bottom: 20px;
+  text-decoration: none;
+  transition: 0.3s;
+  flex: 1 1 auto;
+}
+div#userScores a:hover {
+  filter: brightness(90%);
+}
+div#userScores a div.score {
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+  width: 225px;
+  height: 225px;
+  text-align: center;
+  font-size: 2.5rem;
+  text-overflow: ellipsis;
+}
+div#userScores a div.score#newScore {
+  display: flex;
+}
+div#userScores a div.score#newScore div#addNewScore {
+  margin: auto;
+  background-color: silver;
+  font-size: 72px;
+  border-radius: 90px;
+  display: flex;
+  width: 175px;
+  height: 175px;
+}
+div#userScores a div.score#newScore div#addNewScore div {
+  margin: auto;
+}
+
+div#scoreSetup {
+  margin: auto;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border: 1px solid black;
+  background-color: silver;
+  color: black;
+  width: 50%;
+  height: fit-content;
+  border-radius: 10px;
+  padding: 15px;
+}
+div#scoreSetup h2 {
+  text-align: center;
+  margin-top: 0;
+}
+div#scoreSetup form {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  row-gap: 10px;
+}
+div#scoreSetup form div#timesig input {
+  width: 50px;
+}
+div#scoreSetup form div#scoreSetupButtons {
+  grid-column: 1/span 2;
+  margin: 0 auto;
+}
+div#scoreSetup form div#scoreSetupButtons a {
+  box-sizing: border-box;
+  appearance: auto;
+  user-select: none;
+  text-align: center;
+  background-color: buttonface;
+  color: buttontext;
+  white-space: pre;
+  padding-block: 1px;
+  padding-inline: 6px;
+  border-width: 2px;
+  border-style: outset;
+  border-color: rgb(118, 118, 118);
+  border-image: initial;
+  text-decoration: none;
+  border-radius: 2px;
+}
+div#scoreSetup form span.error {
+  color: red;
+}
+
+div#scoreHeadings {
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+div#scoreHeadings h2 {
+  margin: 0;
+  font-size: 2rem;
+}
+div#scoreHeadings h3 {
+  margin-top: 0;
+}
+
+div#notationSelection {
+  margin-top: 4em;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  text-align: center;
+  color: black;
+  position: sticky;
+  z-index: 1;
+}
+div#notationSelection * {
+  background-color: white;
+  transition: 0.3s;
+  border: 1px solid black;
+  cursor: pointer;
+}
+div#notationSelection *:hover {
+  background-color: #e2e2e2;
+}
+div#notationSelection span {
+  font-size: 2rem;
+}
+div#notationSelection span:not(:last-of-type) {
+  border-right: none;
+}
+div#notationSelection span::before {
+  position: relative;
+}
+div#notationSelection span:nth-of-type(2)::before {
+  top: 0.28em;
+}
+div#notationSelection span:nth-of-type(3)::before {
+  top: 0.28em;
+}
+div#notationSelection span:nth-of-type(4)::before {
+  top: 0.24em;
+}
+div#notationSelection span:nth-of-type(5)::before {
+  top: 0.3em;
+}
+div#notationSelection span:nth-of-type(6)::before {
+  top: 0.36em;
+}
+div#notationSelection span:nth-of-type(7)::before {
+  top: 0.42em;
+}
+div#notationSelection span:nth-of-type(8)::before {
+  top: 0.48em;
+}
+div#notationSelection span.unclickable {
+  background-color: silver;
+  cursor: default;
+}
+div#notationSelection span.selected {
+  background-color: red;
+}
+div#notationSelection div#saveChanges {
+  grid-column: 1/-1;
+  border-top: none;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+div#actualScore {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: fit-content;
+}
+div#actualScore.noNotationSelection {
+  margin-top: calc(2rem + 3.17em);
+}
+div#actualScore > div {
+  height: fit-content;
+}
+div#actualScore > div:nth-child(3) {
+  display: flex;
+  justify-content: end;
+}
+div#actualScore > div:nth-child(3) span#instrument {
+  margin: auto 0;
+  text-align: right;
+  font-size: 5rem;
+  height: 1.5em;
+}
+div#actualScore > div#songBPM {
+  padding-left: 3.5em;
+  grid-column: 2/span 3;
+}
+div#actualScore > div#songBPM span.quarter-note-up {
+  position: relative;
+  top: 0.3em;
+}
+div#actualScore > div.bar {
+  overflow: hidden;
+  position: relative;
+}
+div#actualScore > div.bar div.scoreNot {
+  display: grid;
+  height: 0;
+  grid-template-columns: 1fr;
+}
+div#actualScore > div.bar div.scoreNot div.clefs {
+  font-size: 5rem;
+}
+div#actualScore > div.bar div.scoreNot div.clefs span {
+  position: absolute;
+  left: 6px;
+}
+div#actualScore > div.bar div.scoreNot div.timesig span:nth-child(1 of .notesNum) {
+  top: -20px;
+}
+div#actualScore > div.bar div.scoreNot div.timesig span:nth-child(1 of .notesPerBar) {
+  top: -60px;
+}
+div#actualScore > div.bar div.scoreNot div.timesig span:nth-child(2 of .notesNum) {
+  top: 105px;
+}
+div#actualScore > div.bar div.scoreNot div.timesig span:nth-child(2 of .notesPerBar) {
+  top: 67px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) {
+  display: grid;
+  position: relative;
+  bottom: 320px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.beat-1.divide-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.beat-1.divide-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.beat-1.divide-8 {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.beat-1.divide-16 {
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.beat-1.divide-32 {
+  display: grid;
+  grid-template-columns: repeat(32, 1fr);
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.beat-1.divide-64 {
+  display: grid;
+  grid-template-columns: repeat(64, 1fr);
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper {
+  height: 130px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span {
+  position: relative;
+  font-size: 5rem;
+  transition: 0.3s;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.whole-rest, div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.half-rest, div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.quarter-rest, div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.eighth-rest, div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.sixteenth-rest, div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.thirtysecond-rest, div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.sixtyfourth-rest, div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.onehundredtwentyeighth-rest {
+  top: 10px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.whole-rest.bassNote, div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.half-rest.bassNote, div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.quarter-rest.bassNote, div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.eighth-rest.bassNote, div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.sixteenth-rest.bassNote, div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.thirtysecond-rest.bassNote, div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.sixtyfourth-rest.bassNote, div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.onehundredtwentyeighth-rest.bassNote {
+  top: 6px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.a5 {
+  top: -48px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.g5 {
+  top: -38.4px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.f5 {
+  top: -28.8px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.e5 {
+  top: -19.2px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.d5 {
+  top: -9.6px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.c5 {
+  top: 0;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.b4 {
+  top: 9.6px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.a4 {
+  top: 19.2px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.g4 {
+  top: 28.8px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.f4 {
+  top: 38.4px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.e4 {
+  top: 48px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.d4 {
+  top: 57.6px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.c4 {
+  top: 73px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.c4.bassNote {
+  top: -57px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.b3 {
+  top: -42.4px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.a3 {
+  top: -32.8px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.g3 {
+  top: -23.2px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.f3 {
+  top: -13.6px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.e3 {
+  top: -4px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.d3 {
+  top: 5.6px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.c3 {
+  top: 15.2px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.b2 {
+  top: 24.8px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.a2 {
+  top: 34.4px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.g2 {
+  top: 44px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.f2 {
+  top: 53.6px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.e2 {
+  top: 63.2px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.d2 {
+  top: 72.8px;
+}
+div#actualScore > div.bar div.scoreNot > div:not(.clefs, .key, .timesig) div.noteWrapper span.selected {
+  color: #f66;
+}
+div#actualScore > div.bar div.scoreNot div.notes-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+div#actualScore > div.bar div.scoreNot div.beat-2 {
+  grid-column: span 2;
+}
+div#actualScore > div.bar div.scoreNot div.notes-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+div#actualScore > div.bar div.scoreNot div.beat-3 {
+  grid-column: span 3;
+}
+div#actualScore > div.bar div.scoreNot div.notes-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+div#actualScore > div.bar div.scoreNot div.beat-4 {
+  grid-column: span 4;
+}
+div#actualScore > div.bar div.scoreNot div.notes-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+div#actualScore > div.bar div.scoreNot div.beat-5 {
+  grid-column: span 5;
+}
+div#actualScore > div.bar div.scoreNot div.notes-6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+div#actualScore > div.bar div.scoreNot div.beat-6 {
+  grid-column: span 6;
+}
+div#actualScore > div.bar div.scoreNot div.notes-7 {
+  grid-template-columns: repeat(7, 1fr);
+}
+div#actualScore > div.bar div.scoreNot div.beat-7 {
+  grid-column: span 7;
+}
+div#actualScore > div.bar div.scoreNot div.notes-8 {
+  grid-template-columns: repeat(8, 1fr);
+}
+div#actualScore > div.bar div.scoreNot div.beat-8 {
+  grid-column: span 8;
+}
+div#actualScore > div.bar div.scoreNot div.notes-9 {
+  grid-template-columns: repeat(9, 1fr);
+}
+div#actualScore > div.bar div.scoreNot div.beat-9 {
+  grid-column: span 9;
+}
+div#actualScore > div.bar div.scoreNot div.notes-10 {
+  grid-template-columns: repeat(10, 1fr);
+}
+div#actualScore > div.bar div.scoreNot div.beat-10 {
+  grid-column: span 10;
+}
+div#actualScore > div.bar div.scoreNot div.notes-11 {
+  grid-template-columns: repeat(11, 1fr);
+}
+div#actualScore > div.bar div.scoreNot div.beat-11 {
+  grid-column: span 11;
+}
+div#actualScore > div.bar div.scoreNot div.notes-12 {
+  grid-template-columns: repeat(12, 1fr);
+}
+div#actualScore > div.bar div.scoreNot div.beat-12 {
+  grid-column: span 12;
+}
+div#actualScore > div.bar.keyShow div.scoreNot {
+  height: 0;
+  grid-template-columns: auto 1fr;
+}
+div#actualScore > div.bar.keyShow div:nth-child(1 of .scoreNot), div#actualScore > div.bar.keyShow div:nth-child(4n+4 of .scoreNot) {
+  height: 0;
+  grid-template-columns: calc(15% + 8px) auto 1fr;
+}
+div#actualScore > div.bar.keyShow.timeSigShow div.scoreNot {
+  height: 0;
+  grid-template-columns: auto 15% 1fr;
+}
+div#actualScore > div.bar.keyShow.timeSigShow div.scoreNot {
+  height: 0;
+  grid-template-columns: calc(15% + 8px) auto 15% 1fr;
+}
+div#actualScore > div.bar.timeSigShow:not(.keyShow) div.scoreNot {
+  grid-template-columns: 15% 1fr;
+}
+div#actualScore > div.bar.timeSigShow:not(.keyShow) div:nth-child(1 of .scoreNot), div#actualScore > div.bar.timeSigShow:not(.keyShow) div:nth-child(4n+4 of .scoreNot) {
+  grid-template-columns: calc(15% + 8px) 15% 1fr;
+}
+div#actualScore > div.bar:not(.timeSigShow) div.scoreNot {
+  margin-left: 15px;
+}
+div#actualScore > div#newBar {
+  position: relative;
+  top: 28px;
+  height: 13rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  background-color: silver;
+  border: 1px solid black;
+  font-size: 3rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+p#deleteScore {
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+  text-align: center;
+  width: fit-content;
+  margin: 16px auto;
+}
+
+footer {
+  padding: 5px 0;
+  font-size: small;
+}/*# sourceMappingURL=main.css.map */

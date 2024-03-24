@@ -1,0 +1,6 @@
+<%- include('includes/header') %>
+    <% if (username != 'Not_Logged_In') { %>
+        <%- include('includes/profileDropdown') %>
+    <% } %>
+    <p class="errorMessage">Sorry, but this score is private. You can't view it unless you're the creator of it and logged in.</p>
+<%- include('includes/footer') %>

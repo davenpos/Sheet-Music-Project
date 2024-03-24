@@ -1,0 +1,17 @@
+<%- include('includes/header') %>
+    <%- include('includes/profileDropdown') %>
+    <h3 id="dashboardGreeting">Hello, <%= username %>. Welcome to your dashboard.</h3>
+    <br>
+    <div id="userScores">
+        <a href="/create-score">
+            <div id="newScore" class="score">
+                <div id="addNewScore">
+                    <div>+</div>
+                </div>
+            </div>
+        </a>
+        <% for (let i = 0; i < scores.length; i++) { %>
+            <a href="/score/<%= scores[i].id %>"><div class="score"><%= scores[i].title %></div></a>
+        <% } %>
+    </div>
+<%- include('includes/footer') %>

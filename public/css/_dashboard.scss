@@ -1,0 +1,39 @@
+h3#dashboardGreeting {
+    margin: 0 0 10px;
+    text-align: center;
+}
+
+div#userScores {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+    a {
+        margin-bottom: 20px;
+        text-decoration: none;
+        transition: 0.3s;
+        flex: 1 1 auto;
+        &:hover { filter: brightness(90%); }
+        div.score {
+            background-color: white;
+            color: black;
+            border-radius: 10px;
+            width: 225px;
+            height: 225px;
+            text-align: center;
+            font-size: 2.5rem;
+            text-overflow: ellipsis;
+            &#newScore {
+                display: flex;
+                div#addNewScore {
+                    margin: auto;
+                    background-color: silver;
+                    font-size: 72px;
+                    border-radius: 90px;
+                    display: flex;
+                    width: 175px;
+                    height: 175px;
+                    div { margin: auto; }
+                }
+            }
+        }
+    }
+}

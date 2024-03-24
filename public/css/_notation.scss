@@ -1,0 +1,131 @@
+@mixin background($position, $fontsize, $height, $scale, $origin) {
+    position: $position;
+    font-size: $fontsize;
+    display: inline-block;
+    height: $height;
+    transform: scaleX($scale);
+    transform-origin: $origin;
+}
+
+@font-face {
+    font-family: "Bravura Text";
+    src: url(BravuraText.woff);
+}
+
+span.notation {
+    font-family: "Bravura Text";
+    font-weight: normal;
+    &.treble {
+        top: 6px;
+        &::before { content: ""; }
+    }
+    &.bass {
+        top: 132px;
+        &::before { content: ""; }
+    }
+    &.flat::before { content: ""; }
+    &.sharp::before { content: ""; }
+    &.natural::before { content: ""; }
+    &.whole {
+        &-rest::before { content: ""; }
+        &-note::before { content: ""; }
+    }
+    &.half {
+        &-rest::before { content: ""; }
+        &-note {
+            &-up::before { content: ""; }
+            &-down::before { content: ""; }
+        }
+    }
+    &.quarter {
+        &-rest::before { content: ""; }
+        &-note {
+            &-up::before { content: ""; }
+            &-down::before { content: ""; }
+        }
+    }
+    &.eighth {
+        &-rest::before { content: ""; }
+        &-note {
+            &-up::before { content: ""; }
+            &-down::before { content: ""; }
+        }
+    }
+    &.sixteenth {
+        &-rest::before { content: ""; }
+        &-note {
+            &-up::before { content: ""; }
+            &-down::before { content: ""; }
+        }
+    }
+    &.thirtysecond {
+        &-rest::before { content: ""; }
+        &-note {
+            &-up::before { content: ""; }
+            &-down::before { content: ""; }
+        }
+    }
+    &.sixtyfourth {
+        &-rest::before { content: ""; }
+        &-note {
+            &-up::before { content: ""; }
+            &-down::before { content: ""; }
+        }
+    }
+    &.onehundredtwentyeighth {
+        &-rest::before { content: ""; }
+        &-note {
+            &-up::before { content: ""; }
+            &-down::before { content: ""; }
+        }
+    }
+    &.notehead {
+        &-half::before { content: ""; }
+        &-black::before { content: ""; }
+    }
+    &.timesignum {
+        @for $i from 0 through 9 {
+            &-#{$i} {
+                position: absolute;
+                font-size: 6rem;
+            }
+        }
+        &-0::before { content: ""; }
+        &-1::before { content: ""; }
+        &-2::before { content: ""; }
+        &-3::before { content: ""; }
+        &-4::before { content: ""; }
+        &-5::before { content: ""; }
+        &-6::before { content: ""; }
+        &-7::before { content: ""; }
+        &-8::before { content: ""; }
+        &-9::before { content: ""; }
+    }
+    &.barline {
+        @include background(relative, 16rem, 1.15em, 0.2, left center);
+        bottom: 55px;
+        &::before { content: ""; }
+        &.lastOfLine, &-final {
+            @include background(absolute, 16rem, 1.15em, 0.2, right center);
+            right: 0;
+            top: -55px;
+        }
+        &-final::before { content: ""; }
+    }
+    &.brace {
+        @include background(relative, 16rem, 1.15em, 1, left center);
+        bottom: 55px;
+        &::before { content: ""; }
+    }
+    &#instrument { vertical-align: middle; }
+    &.staff {
+        @include background(relative, 6rem, auto, 40, 0% 0%);
+        bottom: 56px;
+        right: 11px;
+        & ~ & {
+            bottom: 182px;
+            right: 15px;
+        }
+        &::before { content: ""; }
+    }
+}

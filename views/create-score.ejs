@@ -1,0 +1,113 @@
+<%- include('includes/header') %>
+    <div id="scoreSetup">
+        <h2>Tell us about your score:</h2>
+        <form action="/create-score" method="POST">
+            <% let titleErrors = [];
+            let bpmErrors = [];
+            let keyErrors = [];
+            let timeSigErrors = [];
+            let subtitleError = "";
+            let publicOrPrivateError = "";
+            if (errors) {
+                errors.forEach(function(message) {
+                    if (message.search(/\btitle\b/gi) != -1) {
+                        titleErrors.push(message)
+                    } else if (message.search(/beats/gi) != -1) {
+                        bpmErrors.push(message)
+                    } else if (message.search(/key/gi) != -1) {
+                        keyErrors.push(message)
+                    } else if (message.search(/signature/gi) != -1) {
+                        timeSigErrors.push(message)
+                    } else if (message.search(/subtitle/gi) != -1) {
+                        subtitleError = message
+                    } else if (message.search(/public/gi) != -1) {
+                        publicOrPrivateError = message
+                    }
+                })
+            } %>
+            <label for="title">Title:</label>
+            <% if (titleErrors.length) { %>
+                <input type="text" id="title" name="title" placeholder="<%= titleErrors[0] %>" class="error">
+            <% } else { %>
+                <input type="text" id="title" name="title">
+            <% } %>
+            <label for="subtitle">Subtitle:</label>
+            <% if (subtitleError.length) { %>
+                <input type="text" id="subtitle" name="subtitle" placeholder="<%= subtitleError %>" class="error">
+            <% } else { %>
+                <input type="text" id="subtitle" name="subtitle">
+            <% } %>
+            <label for="bpm">Beats per minute:</label>
+            <% if (bpmErrors.length) { %>
+                <input type="number" id="bpm" min="30" name="bpm" placeholder="<%= bpmErrors[0] %>" class="error">
+            <% } else { %>
+                <input type="number" id="bpm" min="30" name="bpm">
+            <% } %> 
+            <label for="key">Key:</label>
+            <% if (keyErrors.length) { %>
+                <input list="keys" id="key" name="key" placeholder="<%= keyErrors[0] %>" class="error">
+            <% } else { %>
+                <input list="keys" id="key" name="key">
+            <% } %>
+            <datalist id="keys">
+                <option value="A">
+                <option value="A♭">
+                <option value="A♯">
+                <option value="B">
+                <option value="B♭">
+                <option value="C">
+                <option value="C♭">
+                <option value="C♯">
+                <option value="D">
+                <option value="D♭">
+                <option value="D♯">
+                <option value="E">
+                <option value="E♭">
+                <option value="F">
+                <option value="F♯">
+                <option value="G">
+                <option value="G♭">
+                <option value="G♯">
+            </datalist>
+            <label for="majorMinor">Major/Minor:</label>
+            <input list="majminlist" id="majorMinor" name="majorMinor">
+            <datalist id="majminlist">
+                <option value="Major">
+                <option value="Minor">
+            </datalist>
+            <label for="timesig">Time signature:</label>
+            <div id="timesig">
+                <input type="number" min="2" name="notesPerBar" max="12">/<input list="notes" name="notes">
+                <datalist id="notes">
+                    <option value="2">
+                    <option value="4">
+                    <option value="8">
+                    <option value="16">
+                    <option value="32">
+                    <option value="64">
+                    <option value="128">
+                </datalist>
+                <% if (timeSigErrors.length) { %>
+                    <span class="error"><%= timeSigErrors[0] %></span>
+                <% } %>
+            </div>
+            <span>Public or private:</span>
+            <div id="publicPrivate">
+                <input type="radio" id="public" name="publicOrPrivate" value="public">
+                <label for="public">Public</label>
+                <input type="radio" id="private" name="publicOrPrivate" value="private">
+                <label for="private">Private</label>
+                <% if (publicOrPrivateError.length) { %>
+                    <span class="error"><%= publicOrPrivateError %></span>
+                <% } %>
+            </div>
+            <div id="scoreSetupButtons">
+                <input type="submit">
+                <a href="/">Cancel</a>
+            </div>
+        </form>
+    </div>
+<%- include('includes/footer') %>
+<!--
+https://codepoints.net/musical_symbols
+-->

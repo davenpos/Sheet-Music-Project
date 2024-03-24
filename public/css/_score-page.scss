@@ -1,0 +1,212 @@
+@mixin scoreNotDisplay($gridColumns) {
+    height: 0;
+    grid-template-columns: $gridColumns;
+}
+
+div#scoreHeadings {
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    h2 {
+        margin: 0;
+        font-size: 2rem;
+    }
+    h3 { margin-top: 0; }
+}
+
+div#notationSelection {
+    margin-top: 4em;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    text-align: center;
+    color: black;
+    position: sticky;
+    z-index: 1;
+    * {
+        @include whiteHover;
+        border: 1px solid black;
+        cursor: pointer;
+    }
+    span {
+        font-size: 2rem;
+        &:not(:last-of-type) { border-right: none; }
+        &::before { position: relative; }
+        @for $i from 2 through 3 {
+            &:nth-of-type(#{$i})::before { top: calc(0.07em * 4); }
+        }
+        @for $i from 4 through 8 {
+            &:nth-of-type(#{$i})::before { top: calc(0.06em * $i); }
+        }
+        &.unclickable {
+            background-color: silver;
+            cursor: default;
+        }
+        &.selected { background-color: red; }
+    }
+    div#saveChanges {
+        grid-column: 1 / -1;
+        border-top: none;
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+}
+
+div#actualScore {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    height: fit-content;
+    &.noNotationSelection { margin-top: calc(2rem + 3.17em); }
+    > div {
+        height: fit-content;
+        &:nth-child(3) {
+            display: flex;
+            justify-content: end;
+            span#instrument {
+                margin: auto 0;
+                text-align: right;
+                font-size: 5rem;
+                height: 1.5em;
+            }
+        }
+        &#songBPM {
+            padding-left: 3.5em;
+            grid-column: 2 / span 3;
+            span.quarter-note-up {
+                position: relative;
+                top: 0.3em;
+            }
+        }
+        &.bar {
+            overflow: hidden;
+            position: relative;
+            div.scoreNot {
+                display: grid;
+                @include scoreNotDisplay(1fr); //Notes only
+                div.clefs {
+                    font-size: 5rem;
+                    span {
+                        position: absolute;
+                        left: 6px;
+                    }
+                }
+                div.timesig {
+                    span:nth-child(1 of .notesNum) { top: -20px; }
+                    span:nth-child(1 of .notesPerBar) { top: -60px; }
+                    span:nth-child(2 of .notesNum) { top: 105px; }
+                    span:nth-child(2 of .notesPerBar) { top: 67px; }
+                }
+                & > div:not(.clefs, .key, .timesig) {
+                    display: grid;
+                    position: relative;
+                    bottom: 320px;
+                    @for $i from 1 through 6 {
+                        $divideNum: pow(2, $i);
+                        div.beat-1.divide-#{$divideNum} {
+                            display: grid;
+                            grid-template-columns: repeat($divideNum, 1fr);
+                        }
+                    }
+                    div.noteWrapper {
+                        height: 130px;
+                        span {
+                            position: relative;
+                            font-size: 5rem;
+                            transition: 0.3s;
+                            &.whole-rest, &.half-rest, &.quarter-rest, &.eighth-rest, &.sixteenth-rest, &.thirtysecond-rest, &.sixtyfourth-rest, &.onehundredtwentyeighth-rest {
+                                top: 10px;
+                                &.bassNote { top: 6px; }
+                            }
+                            &.a5 { top: -48px; }
+                            &.g5 { top: -38.4px; }
+                            &.f5 { top: -28.8px; }
+                            &.e5 { top: -19.2px; }
+                            &.d5 { top: -9.6px; }
+                            &.c5 { top: 0; }
+                            &.b4 { top: 9.6px; }
+                            &.a4 { top: 19.2px; }
+                            &.g4 { top: 28.8px; }
+                            &.f4 { top: 38.4px; }
+                            &.e4 { top: 48px; }
+                            &.d4 { top: 57.6px; }
+                            &.c4 {
+                                top: 73px;
+                                &.bassNote { top: -57px; }
+                            }
+                            &.b3 { top: -42.4px; }
+                            &.a3 { top: -32.8px; }
+                            &.g3 { top: -23.2px; }
+                            &.f3 { top: -13.6px; }
+                            &.e3 { top: -4px; }
+                            &.d3 { top: 5.6px; }
+                            &.c3 { top: 15.2px; }
+                            &.b2 { top: 24.8px; }
+                            &.a2 { top: 34.4px; }
+                            &.g2 { top: 44px; }
+                            &.f2 { top: 53.6px; }
+                            &.e2 { top: 63.2px; }
+                            &.d2 { top: 72.8px; }
+                            &.selected { color: #f66; }
+                        }
+                    }
+                }
+                @for $i from 2 through 12 {
+                    div.notes-#{$i} { grid-template-columns: repeat($i, 1fr); }
+                    div.beat-#{$i} { grid-column: span $i; }
+                }
+            }
+            &.keyShow {
+                div {
+                    &.scoreNot { @include scoreNotDisplay(auto 1fr); } //Key and notes
+                    &:nth-child(1 of .scoreNot), &:nth-child(4n + 4 of .scoreNot) {
+                        @include scoreNotDisplay(calc(15% + 8px) auto 1fr); //Clefs, key and notes
+                    }
+                }
+                &.timeSigShow {
+                    div {
+                        &.scoreNot { @include scoreNotDisplay(auto 15% 1fr); } //Key, time signature and notes
+                        &.scoreNot {
+                            @include scoreNotDisplay(calc(15% + 8px) auto 15% 1fr); //Clefs, key, time signature and notes
+                        }
+                    }
+                }
+            }
+            &.timeSigShow:not(.keyShow) div {
+                &.scoreNot { grid-template-columns: 15% 1fr; } //Time signature and notes
+                &:nth-child(1 of .scoreNot), &:nth-child(4n + 4 of .scoreNot) {
+                    grid-template-columns: calc(15% + 8px) 15% 1fr; //Clefs, time signature and notes
+                }
+            }
+            &:not(.timeSigShow) div.scoreNot { margin-left: 15px; }
+        }
+        &#newBar {
+            position: relative;
+            top: 28px;
+            height: 13rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin: {
+                left: auto;
+                right: auto;
+            }
+            text-align: center;
+            background-color: silver;
+            border: 1px solid black;
+            font: {
+                size: 3rem;
+                weight: bold;
+            }
+            cursor: pointer;
+        }
+    }
+}
+
+p#deleteScore {
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+    text-align: center;
+    width: fit-content;
+    margin: 16px auto;
+}

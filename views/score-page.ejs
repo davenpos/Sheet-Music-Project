@@ -1,0 +1,215 @@
+<%- include('includes/header') %>
+    <% if (username != 'Not_Logged_In') { %>
+        <%- include('includes/profileDropdown') %>
+    <% } %>
+    <div id="scoreHeadings">
+        <h2><%= score.title %></h2>
+        <h3><%= score.subtitle %></h3>
+    </div>
+    <% if (score.userID == userID) { %>
+        <div id="notationSelection">
+            <span class="notation whole-note unclickable"></span>
+            <% for (let i = 1; i <= 7; i++) { %>
+                <span class="notation <%= lengthName(2 ** i) %>-note-up unclickable"></span>
+            <% } %>
+            <div id="saveChanges">Save Changes to Score</div>
+        </div>
+    <% }
+    if (score.userID == userID) { %>
+        <div id="actualScore" data-userid="<%= score.userID %>">
+    <% } else { %>
+        <div id="actualScore" class="noNotationSelection">
+    <% } %>
+        <div></div>
+        <% let scorePieces = score.scorestring.split(/\s(?!(\d+[a-gr]))/g)
+        scorePieces = scorePieces.filter(function(ele) {
+            return ele != undefined
+        })
+        let bpm = scorePieces[0] %>
+        <div id="songBPM"><span class="notation quarter-note-up"></span> = <%= bpm.substring(3) %></div>
+        <div>
+            <span id="instrument">Piano</span><span class="notation brace"></span>
+        </div>
+        <% let initialKey = scorePieces[1]
+        let notesPerBar = scorePieces[2].match(/(?<=time)\d+/)[0]
+        let notesNum = scorePieces[2].match(/(?<=time\d+\/)\d+/)[0]
+
+        let trebleNoteMatches = scorePieces[3].match(/(?<=\()[\w\s]+(?<!\))/g)
+        let bassNoteMatches = scorePieces[4].match(/(?<=\()[\w\s]+(?<!\))/g)
+
+        let trebleNotesString = ""
+        let bassNotesString = ""
+
+        for (let i = 0; i < trebleNoteMatches.length; i++) {
+            trebleNotesString += trebleNoteMatches[i]
+        }
+        for (let i = 0; i < bassNoteMatches.length; i++) {
+            bassNotesString += bassNoteMatches[i]
+        }
+
+        let allTrebleNotes = trebleNotesString.split(" ")
+        let allBassNotes = bassNotesString.split(" ")
+        let treblePos = 0, bassPos = 0, currentBarLength = 0
+        let barNum = 1
+        while (treblePos < allTrebleNotes.length) {
+            if (currentBarLength == 0) {
+                barClasses = "bar"
+                if (barNum == 1 || barNum % 4 == 0) {
+                    barClasses += " keyShow"
+                }
+                if (treblePos == 0) {
+                    barClasses += " timeSigShow"
+                }
+                %>
+                <div class="<%= barClasses %>">
+                    <span class="notation barline"></span>
+                    <span class="notation staff"></span>
+                    <span class="notation staff"></span>
+                    <div class="scoreNot">
+                    <% if (barNum == 1 || barNum % 4 == 0) { %>
+                        <div class="clefs">
+                            <span class="notation treble"></span>
+                            <span class="notation bass"></span>
+                        </div>
+                        <div class="key">
+                            
+                        </div>
+                    <% }
+                    if (treblePos == 0) { %>
+                        <div class="timesig">
+                            <% for (let j = 1; j <= 2; j++) {
+                                if (notesPerBar < 10) { %>
+                                    <span class="notation timesignum-<%= notesPerBar %> notesPerBar"></span>
+                                <% }
+                                if (notesNum < 10) { %>
+                                    <span class="notation timesignum-<%= notesNum %> notesNum"></span>
+                                <% }
+                            } %>
+                        </div>
+                    <% } %>
+                    <div class="notes-<%= notesPerBar %>">
+            <% }
+            let currLength = 0, origTreblePos = treblePos
+            while (currentBarLength < notesPerBar) {
+                currLength = allTrebleNotes[treblePos].match(/\d+/)[0]
+                currentBarLength += notesNum / currLength
+                treblePos++
+            }
+
+            displayNotes(origTreblePos, treblePos, allTrebleNotes, false)
+
+            let bassMeasureNotes = 0, origBassPos = bassPos
+            while (bassMeasureNotes < notesPerBar) {
+                currLength = allBassNotes[bassPos].match(/\d+/)
+                bassMeasureNotes += notesNum / currLength
+                bassPos++
+            }
+
+            displayNotes(origBassPos, bassPos, allBassNotes, true)
+
+            if (barNum % 4 == 3) { %>
+                <span class="notation barline lastOfLine"></span>
+            <% }
+            if (currentBarLength == notesPerBar) { %>
+                </div>
+                </div>
+                </div>
+                <% currentBarLength = 0
+                barNum++
+            }
+        }
+        if (score.userID == userID) { %>
+            <div id="newBar">Click here to add a new bar</div>
+        <% } %>
+        </div>
+        <% if (score.userID == userID) { %>
+            <p id="deleteScore">Delete this score</p>
+        <% } %>
+<%- include('includes/footer') %>
+<% function lengthName(num) {
+    if (num == 1) {
+        return 'whole'
+    } else if (num == 2) {
+        return 'half'
+    } else if (num == 4) {
+        return 'quarter'
+    } else if (num == 8) {
+        return 'eighth'
+    } else if (num == 16) {
+        return 'sixteenth'
+    } else if (num == 32) {
+        return 'thirtysecond'
+    } else if (num == 64) {
+        return 'sixtyfourth'
+    } else {
+        return 'onehundredtwentyeighth'
+    }
+}
+
+function displayNotes(start, ind, arr, areBassNotes) {
+    let beatSpan = 0
+    let firstOfBeat = true
+    let lastBeatNotePos
+
+    for (let j = start; j < ind; j++) {
+        let noteLength = arr[j].match(/\d+/)[0]
+        let noteLengthName = lengthName(noteLength)
+        beatSpan += notesNum / noteLength
+        let divide = notesNum / noteLength
+        let divNum = 1 / divide
+        if (Number.isInteger(divide) || j > 0 && Number.isInteger(notesNum / arr[j - 1].match(/\d+/)[0])) {
+            firstOfBeat = true
+        }
+
+        if (beatSpan >= 1) {
+            lastBeatNotePos = j
+        } else {
+            if (firstOfBeat) {
+                let beatPercentage = divide
+                let smallestInBeat = divide
+                for (let secondJ = j + 1; beatPercentage < 1; secondJ++) {
+                    let nextNoteInBeat = notesNum / arr[secondJ].match(/\d+/)[0]
+                    beatPercentage += nextNoteInBeat
+                    lastBeatNotePos = secondJ
+                    if (nextNoteInBeat < smallestInBeat) {
+                        smallestInBeat = nextNoteInBeat
+                    }
+                }
+            }
+        }
+
+        if (firstOfBeat) { %>
+            <div class="beat-<%= (beatSpan >= 1) ? beatSpan : 1 %><%= (divide < 1) ? ' divide-' + divNum : '' %>">
+            <% firstOfBeat = false
+        }
+        beatSpan = 0 %>
+        <div class="noteWrapper"<%= (score.userID == userID) ? ' onmouseenter=window.pn.noteWrapperEnter() onmousemove=window.pn.noteWrapperMove() onmouseleave=window.pn.noteWrapperLeave()' : '' %>>
+            <% if (arr[j].match(/r$/)) { %>
+                <span class="notation <%= noteLengthName %>-rest<%= (areBassNotes) ? ' bassNote' : '' %>"></span>
+            <% } else {
+                let notePos = arr[j].match(/[a-g]\d/)[0]
+                let upOrDown = 'up'
+
+                if (areBassNotes) {
+                    if (parseInt(notePos.charAt(1)) >= 3 && notePos != 'c3') {
+                        upOrDown = 'down'
+                    }
+                } else {
+                    if (notePos.charAt(1) == '5' || notePos == 'b4') {
+                        upOrDown = 'down'
+                    }
+                } %>
+                <span class="notation <%= noteLengthName %>-note-<%= upOrDown %> <%= notePos %><%= (areBassNotes && notePos == 'c4') ? ' bassNote' : '' %>"></span>
+            <% } %>
+        </div>
+        <% if (j == lastBeatNotePos) { %>
+            </div>
+        <% }
+    }
+}
+
+%>
+
+<!--
+https://en.wikipedia.org/wiki/C_(musical_note)#Designation_by_octave
+-->

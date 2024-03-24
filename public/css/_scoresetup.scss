@@ -1,0 +1,49 @@
+div#scoreSetup {
+    margin: auto;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border: 1px solid black;
+    background-color: silver;
+    color: black;
+    width: 50%;
+    height: fit-content;
+    border-radius: 10px;
+    padding: 15px;
+
+    h2 {
+        text-align: center;
+        margin-top: 0;
+    }
+
+    form {
+        display: grid;
+        grid-template-columns: 2fr 3fr;
+        row-gap: 10px;
+        div#timesig input { width: 50px; }
+        div#scoreSetupButtons {
+            grid-column: 1 / span 2;
+            margin: 0 auto;
+            a {
+                box-sizing: border-box;
+                appearance: auto;
+                user-select: none;
+                text-align: center;
+                background-color: buttonface;
+                color: buttontext;
+                white-space: pre;
+                padding-block: 1px;
+                padding-inline: 6px;
+                border-width: 2px;
+                border-style: outset;
+                border-color: rgb(118, 118, 118);
+                border-image: initial;
+                text-decoration: none;
+                border-radius: 2px;
+            }
+        }
+        span.error { color: red; }
+    }
+}

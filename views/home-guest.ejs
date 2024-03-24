@@ -1,0 +1,63 @@
+<%- include('includes/header') %>
+    <div class="twoColumns">
+        <div>
+            <h3>New here? Sign up for an account:</h3>
+            <form action="/register" method="POST" id="registerForm" autocomplete="off">
+                <div>
+                    <% let usernameErrors = [];
+                    let emailErrors = [];
+                    let passwordErrors = [];
+                    if (errors) {
+                        errors.forEach(function(message) {
+                            if (message.search(/username/gi) != -1 && message != "Invalid username/password") {
+                                usernameErrors.push(message)
+                            } else if (message.search(/email/gi) != -1) {
+                                emailErrors.push(message)
+                            } else if (message.search(/password/gi) != -1) {
+                                passwordErrors.push(message)
+                            }
+                        })
+                    } %>
+                    <label for="registerUsername">Username</label>
+                    <% if (usernameErrors.length) { %>
+                        <input type="text" name="username" id="registerUsername" autocomplete="off" placeholder="<%= usernameErrors[0] %>" class="error">
+                    <% } else { %>
+                        <input type="text" name="username" id="registerUsername" autocomplete="off">
+                    <% } %>
+                    <label for="registerEmail">Email</label>
+                    <% if (emailErrors.length) { %>
+                        <input type="email" name="email" id="registerEmail" autocomplete="off" placeholder="<%= emailErrors[0] %>" class="error">
+                    <% } else { %>
+                        <input type="email" name="email" id="registerEmail" autocomplete="off">
+                    <% } %>
+                    <label for="registerPassword">Password</label>
+                    <% if (passwordErrors.length) { %>
+                        <input type="password" name="password" id="registerPassword" autocomplete="off" placeholder="<%= passwordErrors[0] %>" class="error">
+                    <% } else { %>
+                        <input type="password" name="password" id="registerPassword">
+                    <% } %>
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+        <div>
+            <h3>Already have an account? Log in:</h3>
+            <form action="/login" method="POST" id="loginForm">
+                <div>
+                    <label for="loginUsername">Username</label>
+                    <% if (errors && errors[0] == "Invalid username/password") { %>
+                        <input type="text" name="username" id="loginUsername" autocomplete="off" placeholder="<%= errors[0] %>" class="error">
+                    <% } else { %>
+                        <input type="text" name="username" id="loginUsername" autocomplete="off">
+                    <% } %>
+                    <!-- Make placeholder disappear once you begin typing! -->
+                    <label for="logiEmail">Email</label>
+                    <input type="email" name="email" id="loginEmail" autocomplete="off">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" name="password" id="loginPassword">
+                </div>
+                <button type="submit">Log In</button>
+            </form>
+        </div>
+    </div>
+<%- include('includes/footer') %>

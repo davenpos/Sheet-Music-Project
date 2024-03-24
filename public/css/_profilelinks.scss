@@ -1,0 +1,47 @@
+div#profileDropdown {
+    float: right;
+    width: fit-content;
+    &:hover div.profileLinks { display: block; }
+
+    button {
+        cursor: pointer;
+        border: none;
+        &#usernameBtn {
+            @include whiteHover;
+            color: gray;
+            text-transform: uppercase;
+            padding: 10px;
+        }
+    }
+
+    button#usernameBtn, div.profileLinks { min-width: 175px; }
+    
+    div.profileLinks {
+        background-color: silver;
+        position: absolute;
+        padding: 5px 10px;
+        display: none;
+        z-index: 2;
+        border: 1px solid black;
+        a, form button {
+            text-decoration: none;
+            font-weight: bold;
+            color: black;
+            display: block;
+            width: fit-content;
+            width: -moz-fit-content;
+            &:hover { text-decoration: underline; }
+        }
+        form button {
+            background-color: inherit;
+            padding: 0;
+            font: {
+                family: Garamond, serif;
+                size: initial;
+                weight: bold !important;
+            }
+            text-align: left;
+            box-sizing: border-box;
+        }
+    }
+}
